@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Lord 4L Barber — cortes e barbas com acabamento de verdade, sem pressa. Vila São Jorge, Guarulhos. Agende pelo WhatsApp."
+    />
+    <meta name="theme-color" content="#111110" />
+    <title>Lord 4L Barber</title>
+
+    <!-- Compartilhamento social.
+         og:image aponta para um JPEG 1200x630 (a marca da casa sobre o fundo do herói) e não para o .webp:
+         os crawlers do LinkedIn e do WhatsApp não decodificam WebP de forma confiável e o
+         card cairia para texto puro ou para o favicon.
+         TODO(publicação): não existe domínio de produção ainda, então og:image/twitter:image
+         ficaram como caminho relativo. Prefira sempre URL absoluta
+         (https://SEU-DOMINIO/assets/images/og-cover.jpg) — a maioria dos crawlers ignora
+         caminho relativo. No mesmo deploy, preencher og:url e <link rel="canonical"> com a
+         URL real e, no JSON-LD abaixo, adicionar "url" e "image" absolutos. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Lord 4L Barber" />
+    <meta property="og:title" content="Seu estilo. Sua identidade." />
+    <meta
+      property="og:description"
+      content="Corte, barba e acabamento feitos sem pressa, no seu ritmo — na Vila São Jorge, Guarulhos."
+    />
+    <meta property="og:image" content="assets/images/og-cover.jpg" />
+    <meta
+      property="og:image:alt"
+      content="Marca da Lord 4L Barber: caveira de topete e barba em traço de linha, olhos dourados, sobre fundo escuro"
+    />
+
+    <!-- Sem twitter:site/twitter:creator: a marca só existe no Instagram, e inventar um
+         @handle no Twitter seria uma afirmação falsa nos metadados. -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Seu estilo. Sua identidade." />
+    <meta
+      name="twitter:description"
+      content="Corte, barba e acabamento feitos sem pressa, no seu ritmo — na Vila São Jorge, Guarulhos."
+    />
+    <meta name="twitter:image" content="assets/images/og-cover.jpg" />
+    <meta
+      name="twitter:image:alt"
+      content="Marca da Lord 4L Barber: caveira de topete e barba em traço de linha, olhos dourados, sobre fundo escuro"
+    />
+
+    <!-- Só entram fatos que já estão na página: nome, endereço, telefone, horário e Instagram.
+         Nada de nota, avaliação, faixa de preço ou contagem de reviews. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HairSalon",
+        "name": "Lord 4L Barber",
+        "description": "Lord 4L Barber — cortes e barbas com acabamento de verdade, sem pressa. Vila São Jorge, Guarulhos.",
+        "telephone": "+551123824280",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "R. Elias Acras, 106 - Vila São Jorge",
+          "addressLocality": "Guarulhos",
+          "addressRegion": "SP",
+          "postalCode": "07114-370",
+          "addressCountry": "BR"
+        },
+        "openingHours": "Mo-Sa 10:00-20:00",
+        "sameAs": ["https://www.instagram.com/lord.4l/"]
+      }
+    </script>
+
+    <link rel="icon" href="assets/favicon/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/favicon/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Playfair Display entra em 500 (títulos), 600 (wordmark) e 500 itálico
+         (ênfase do herói); Inter em 400, 600 e 700 (corpo, legendas, rótulos).
+         Nada é pedido e não usado. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="Lord 4L Barber — início">
+        <img class="brand__logo" src="assets/favicon/android-chrome-192x192.png" alt="" />
+        <span class="brand__text">
+          <span class="brand__name">Lord <span class="brand__number">4</span>L</span>
+          <span class="brand__subtitle">Barber</span>
+        </span>
+      </a>
+      <button
+        class="site-nav__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+      >
+        <span class="site-nav__toggle-label">Menu</span>
+        <span class="site-nav__toggle-bars" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Navegação principal">
+        <ul class="site-nav__list">
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#galeria">Galeria</a></li>
+          <li><a href="#contato">Contato</a></li>
+          <li class="site-nav__cta">
+            <a href="#contato">
+              <svg
+                class="icon-whatsapp"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+                fill="currentColor"
+              >
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"
+                />
+              </svg>
+              Agendar
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="conteudo">
+      <section id="inicio" class="hero" aria-labelledby="hero-title">
+        <div class="hero__text">
+          <h1 id="hero-title">Seu estilo. Sua identidade.</h1>
+          <p class="hero__subtitle">Mais que um corte: um ritual de presença.</p>
+          <p class="hero__deck">
+            Corte, barba e acabamento feitos <em>sem pressa</em>, no seu ritmo — com atenção de
+            verdade e preço honesto.
+          </p>
+          <p class="hero__intro">
+            A Lord 4L Barber é um conceito de barbearia criado para valorizar a atenção aos
+            detalhes, o estilo pessoal e uma experiência de cuidado sem pressa. Cada atendimento
+            é planejado no seu estilo — sem correria, com o cuidado que um corte de verdade pede,
+            a preços de bairro.
+          </p>
+          <p class="hero__meta">
+            Segunda a sábado, 10h às 20h · R. Elias Acras, 106 — Vila São Jorge, Guarulhos
+          </p>
+        </div>
+        <div class="hero__media">
+          <!-- A marca viva da casa: o logo animado ocupa o lugar da foto do herói.
+               O WebM carrega canal alfa (fundo transparente) e flutua sobre o
+               painel; o MP4 não suporta alfa, então seu fundo é o próprio Ground.
+               O poster entra antes do primeiro quadro e cobre o pause de quem pede
+               movimento reduzido. O MP4 fica ao lado do WebM como rede de
+               compatibilidade (Safari decodifica H.264 de forma confiável). -->
+          <video
+            class="hero__video"
+            poster="assets/images/lord4l-still.webp"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-hidden="true"
+          >
+            <source
+              src="assets/images/lord4l-animated.webm"
+              type="video/webm"
+              media="(min-width: 901px)"
+            />
+            <source
+              src="assets/images/lord4l-animated.mp4"
+              type="video/mp4"
+              media="(min-width: 901px)"
+            />
+          </video>
+        </div>
+      </section>
+
+      <section id="servicos" class="section section--services" aria-labelledby="servicos-title">
+        <div class="section__content">
+          <div class="section__heading">
+            <h2 id="servicos-title">Precisão em cada detalhe.</h2>
+            <p class="section__intro">
+              Serviços essenciais para cuidar do seu estilo com atenção e acabamento.
+            </p>
+          </div>
+          <!-- Tabela de preços da casa. -->
+          <ul class="service-ledger" data-reveal-target aria-label="Serviços e preços">
+            <li class="service-ledger__row">
+              <div class="service-ledger__info">
+                <h3>Corte</h3>
+                <p>Corte personalizado para o seu estilo.</p>
+              </div>
+              <span class="service-ledger__price">R$ 40,00</span>
+            </li>
+            <li class="service-ledger__row">
+              <div class="service-ledger__info">
+                <h3>Barba</h3>
+                <p>Modelagem e acabamento da barba.</p>
+              </div>
+              <span class="service-ledger__price">R$ 40,00</span>
+            </li>
+            <li class="service-ledger__row">
+              <div class="service-ledger__info">
+                <h3>Corte e Barba</h3>
+                <p>Corte e barba completos no mesmo atendimento.</p>
+              </div>
+              <span class="service-ledger__price">R$ 70,00</span>
+            </li>
+            <li class="service-ledger__row">
+              <div class="service-ledger__info">
+                <h3>Progressiva</h3>
+                <p>Alisamento que reduz volume e frizz.</p>
+              </div>
+              <span class="service-ledger__price"
+                ><span class="service-ledger__from">a partir de</span>R$ 70,00</span
+              >
+            </li>
+            <li class="service-ledger__row">
+              <div class="service-ledger__info">
+                <h3>Relaxamento</h3>
+                <p>Reduz o volume da raiz sem alisar de vez.</p>
+              </div>
+              <span class="service-ledger__price"
+                ><span class="service-ledger__from">a partir de</span>R$ 30,00</span
+              >
+            </li>
+            <li class="service-ledger__row">
+              <div class="service-ledger__info">
+                <h3>Luzes</h3>
+                <p>Mechas e iluminado para clarear o cabelo.</p>
+              </div>
+              <span class="service-ledger__price"
+                ><span class="service-ledger__from">a partir de</span>R$ 100,00</span
+              >
+            </li>
+            <li class="service-ledger__row">
+              <div class="service-ledger__info">
+                <h3>Sobrancelha</h3>
+                <p>Alinhamento e desenho no formato do rosto.</p>
+              </div>
+              <span class="service-ledger__price">R$ 10,00</span>
+            </li>
+            <li class="service-ledger__row">
+              <div class="service-ledger__info">
+                <h3>Depilação nasal/ouvido</h3>
+                <p>Remoção de pelos do nariz e das orelhas.</p>
+              </div>
+              <span class="service-ledger__price">R$ 10,00</span>
+            </li>
+            <li class="service-ledger__row">
+              <div class="service-ledger__info">
+                <h3>Pézinho</h3>
+                <p>Acabamento da nuca e das laterais.</p>
+              </div>
+              <span class="service-ledger__price">R$ 10,00</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="galeria" class="section section--gallery" aria-labelledby="galeria-title">
+        <div class="section__content">
+          <div class="section__heading">
+            <h2 id="galeria-title">Acompanhe nosso trabalho.</h2>
+            <p class="section__intro">
+              Siga
+              <a
+                class="handle"
+                href="https://www.instagram.com/lord.4l/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >@lord.4l</a
+              >
+              e acompanhe os cortes, estilos e bastidores da Lord 4L Barber.
+            </p>
+          </div>
+          <div id="instagram-feed" class="instagram-feed">
+            <div class="elfsight-app-9e4078d3-2fd1-46e8-a0a2-2fa73c8cd71c"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contato" class="section section--contact" aria-labelledby="contato-title">
+        <div class="section__content contact">
+          <div class="contact__intro">
+            <h2 id="contato-title">Vamos renovar seu estilo?</h2>
+            <p>
+              Fale com a Lord 4L Barber para conhecer os serviços e planejar seu próximo
+              atendimento.
+            </p>
+
+            <!-- Dois números, e a distinção é de propósito: o WhatsApp agenda o horário,
+              o telefone é a linha da loja. Não unificar os dois. -->
+            <a
+              class="action"
+              href="https://wa.me/+5511958730123?text=Ol%C3%A1%21%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20e%20agendar%20um%20hor%C3%A1rio."
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg
+                class="icon-whatsapp"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
+                fill="currentColor"
+              >
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"
+                />
+              </svg>
+              Agendar pelo WhatsApp
+            </a>
+            <p class="contact__status">
+              Agendamento pelo WhatsApp, de segunda a sábado, das 10:00 às 20:00.
+            </p>
+          </div>
+          <aside class="contact__colophon" aria-labelledby="contact-details-title">
+            <h3 id="contact-details-title">Informações da barbearia</h3>
+            <dl class="contact__facts">
+              <div>
+                <dt>
+                  <svg
+                    class="fact-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"
+                    />
+                  </svg>
+                  <span>Telefone</span>
+                </dt>
+                <dd><a href="tel:1123824280">(11) 2382-4280</a></dd>
+              </div>
+              <div>
+                <dt>
+                  <svg
+                    class="fact-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 7.5V12l3.2 1.9" />
+                  </svg>
+                  <span>Horário</span>
+                </dt>
+                <dd>Segunda a sábado, das 10:00 às 20:00.</dd>
+              </div>
+              <div>
+                <dt>
+                  <svg
+                    class="fact-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5" />
+                    <circle cx="12" cy="12" r="3.9" />
+                    <circle cx="17.1" cy="6.9" r="0.9" fill="currentColor" stroke="none" />
+                  </svg>
+                  <span>Instagram</span>
+                </dt>
+                <dd>
+                  <a
+                    href="https://www.instagram.com/lord.4l/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >@lord.4l</a
+                  >
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <svg
+                    class="fact-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 10c0 5.5-8 11-8 11s-8-5.5-8-11a8 8 0 0 1 16 0z" />
+                    <circle cx="12" cy="10" r="2.6" />
+                  </svg>
+                  <span>Endereço</span>
+                </dt>
+                <dd>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&amp;query=R.%20Elias%20Acras%2C%20106%20-%20Vila%20S%C3%A3o%20Jorge%2C%20Guarulhos%20-%20SP%2C%2007114-370"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >R. Elias Acras, 106&nbsp;-&nbsp;Vila São Jorge, Guarulhos - SP, 07114-370</a
+                  >
+                </dd>
+              </div>
+            </dl>
+            <iframe
+              class="contact__map"
+              title="Mapa com a localização da Lord 4L Barber"
+              src="https://www.google.com/maps?q=R.%20Elias%20Acras%2C%20106%20-%20Vila%20S%C3%A3o%20Jorge%2C%20Guarulhos%20-%20SP%2C%2007114-370&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p>
+          Lord 4L Barber <span aria-hidden="true">·</span> R. Elias Acras, 106 — Vila São
+          Jorge, Guarulhos <span aria-hidden="true">·</span> Seg a sáb, 10h às 20h
+        </p>
+        <p class="site-footer__handle">
+          <a
+            href="https://www.instagram.com/lord.4l/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >@lord.4l</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://elfsightcdn.com/platform.js" async></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

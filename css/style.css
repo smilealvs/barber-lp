@@ -1,0 +1,939 @@
+/* Lord 4L Barber — "Cadeira à Meia-Noite"
+   Sistema visual: carvão e um único dourado. Chão preto-quente, texto marfim,
+   superfícies elevadas para as faixas de serviço e contato, fios de bronze de
+   1px. Profundidade por regras e campos chapados — nenhuma sombra.
+   Tipografia: Playfair Display (display) sobre Inter (corpo/rótulos). */
+
+:root {
+  --color-ground: #111110;
+  --color-surface: #1a1917;
+  --color-ink: #f5f2eb;
+  --color-ink-soft: #a8a196;
+  --color-gold: #c9a45c;
+  --color-gold-soft: #e0c58c;
+  --color-gold-deep: #a5823e;
+  --color-rule: #35302a;
+
+  --radius: 0.25rem;
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: Inter, "Segoe UI", Arial, sans-serif;
+
+  /* Curva única de chegada: desaceleração exponencial, sem overshoot. */
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --type-display: clamp(2.7rem, 5.4vw, 4.75rem);
+  --type-headline: clamp(1.9rem, 3.4vw, 2.9rem);
+  --type-title: 1.375rem;
+  --type-brand: 1.3rem;
+  --type-body: clamp(1rem, 1.15vw, 1.0625rem);
+  --type-body-sm: 0.9375rem;
+  --type-price: 1.0625rem;
+  --type-label: 0.75rem;
+  --type-caption: 0.8125rem;
+
+  --stage: 1160px;
+  --gutter: max(1.5rem, calc((100% - var(--stage)) / 2));
+
+  /* Altura que a rolagem de âncora reserva: header sticky medido fechado,
+     redifinido nos breakpoints que mudam o header. */
+  --scroll-offset: 5.5rem;
+  --scroll-gap: 0.5rem;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-color: var(--color-rule) var(--color-ground);
+}
+
+body {
+  margin: 0;
+  color: var(--color-ink);
+  background: var(--color-ground);
+  caret-color: var(--color-gold);
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.6;
+}
+
+::selection { color: var(--color-ground); background: var(--color-gold); }
+a { color: inherit; }
+button { font: inherit; }
+img { max-width: 100%; }
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* Caminho de teclado: o link de salto é o primeiro focável da página. */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 20;
+  padding: 0.7rem 1rem;
+  background: var(--color-gold);
+  color: var(--color-ground);
+  font-size: var(--type-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.skip-link:focus { top: 0.75rem; }
+
+/* Estrutura compartilhada */
+.section__content, .site-footer__inner {
+  width: min(100% - 3rem, var(--stage));
+  margin-inline: auto;
+}
+
+h1, h2, h3, p { overflow-wrap: break-word; }
+h1, h2, h3 { text-wrap: balance; }
+
+h1 {
+  max-width: 12ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-display);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  font-optical-sizing: auto;
+}
+
+h2 {
+  max-width: 17ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-headline);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  font-optical-sizing: auto;
+}
+
+/* Camada padrão de parágrafo: tamanho e entrelinha andam juntos com o degrau
+   tipográfico; o :where() zera a especificidade de propósito. */
+:where(.section p:not(.section__intro)) {
+  color: var(--color-ink-soft);
+  font-size: var(--type-body);
+  line-height: 1.65;
+}
+
+#inicio, #servicos, #galeria, #contato {
+  scroll-margin-top: calc(var(--scroll-offset) + var(--scroll-gap));
+}
+
+/* Cabeçalho — masthead da edição */
+.site-header {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+  min-height: 5.25rem;
+  padding-inline: var(--gutter);
+  border-bottom: 1px solid var(--color-rule);
+  background: var(--color-ground);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.brand__logo {
+  display: block;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--color-rule);
+  border-radius: 50%;
+  background: #000;
+  object-fit: cover;
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.brand__name {
+  font-family: var(--font-display);
+  font-size: var(--type-brand);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.brand__number { color: var(--color-gold); }
+
+.brand__subtitle {
+  color: var(--color-ink-soft);
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+/* Navegação */
+.site-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem 1.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  border-bottom: 1px solid transparent;
+  color: var(--color-ink-soft);
+  font-size: var(--type-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  transition: border-color 180ms ease, color 180ms ease;
+}
+
+.site-nav a:hover, .site-nav a:focus-visible {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+/* Você está aqui: sublinhado em marfim, o estado que não é hover. */
+.site-nav a[aria-current="true"] {
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+/* O CTA é dourado fixo e não veste a barra de "você está aqui": em repouso ele
+   fica só na cor, para não parecer uma seção selecionada. Quem acende é o hover. */
+.site-nav__cta a {
+  gap: 0.45rem;
+  color: var(--color-gold);
+}
+
+.site-nav__cta a:hover,
+.site-nav__cta a:focus-visible {
+  border-color: var(--color-gold-soft);
+  color: var(--color-gold-soft);
+}
+
+/* Menu expansível — mesmo mecanismo da versão anterior: o estado mora no
+   aria-expanded do botão, e `html[data-nav-toggle="ready"]` é o que autoriza
+   o botão a existir; sem JS a nav continua visível. */
+.site-nav__toggle {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.2rem;
+  border: 0;
+  color: var(--color-ink);
+  background: none;
+  font-size: var(--type-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.site-nav__toggle:hover { color: var(--color-gold); }
+
+.site-nav__toggle-bars {
+  position: relative;
+  display: block;
+  width: 1.3rem;
+  height: 2px;
+  flex: none;
+  background: currentColor;
+  transition: background-color 180ms ease;
+}
+
+.site-nav__toggle-bars::before,
+.site-nav__toggle-bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transition: transform 180ms ease, top 180ms ease;
+}
+
+.site-nav__toggle-bars::before { top: -6px; }
+.site-nav__toggle-bars::after { top: 6px; }
+
+.site-nav__toggle[aria-expanded="true"] { color: var(--color-gold); }
+.site-nav__toggle[aria-expanded="true"] .site-nav__toggle-bars { background: transparent; }
+.site-nav__toggle[aria-expanded="true"] .site-nav__toggle-bars::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+.site-nav__toggle[aria-expanded="true"] .site-nav__toggle-bars::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+@keyframes nav-row-in {
+  from { opacity: 0; transform: translateY(-0.4rem); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Herói — a abertura da edição
+   Grade de sangria: a coluna de texto começa na margem do palco e a marca
+   viva corre até a borda direita da viewport, como um emblema em página dupla. */
+.hero {
+  display: grid;
+  grid-template-columns:
+    [full-start] var(--gutter)
+    [text-start] minmax(0, 1fr)
+    [text-end media-start] minmax(0, 1fr)
+    [media-end full-end];
+  align-items: stretch;
+  min-height: calc(100svh - var(--scroll-offset));
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.hero__text {
+  grid-column: text;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2.5rem, 5vh, 4rem) clamp(2rem, 3.5vw, 3.5rem)
+    clamp(2.5rem, 5vh, 4rem) 0;
+}
+
+/* O subtítulo: a promessa em uma linha, logo abaixo do título e antes do
+   convite. Fica no degrau Title e na serifa, para não competir com o h1. */
+.hero__subtitle {
+  max-width: 30ch;
+  margin: 1.3rem 0 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: var(--type-title);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+
+.hero__deck {
+  max-width: 38ch;
+  margin: 1.5rem 0 0;
+  color: var(--color-ink-soft);
+  font-size: var(--type-body);
+  line-height: 1.65;
+}
+
+.hero__deck em {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+/* Reforço do ensaio: o texto que antes abria a seção "Sobre" sobe para junto
+   da promessa — a página deixa de dizer a mesma coisa em dois lugares. */
+.hero__intro {
+  max-width: 46ch;
+  margin: 1.1rem 0 0;
+  color: var(--color-ink-soft);
+  font-size: var(--type-body);
+  line-height: 1.65;
+}
+
+.hero__meta {
+  max-width: 34rem;
+  margin: 2rem 0 0;
+  color: var(--color-ink-soft);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+
+/* A marca viva: a coluna da direita é o quadro do logo animado, chapado
+   borda a borda. Sem legenda e sem zoom de ponteiro — é um emblema, não uma
+   foto. */
+.hero__media {
+  position: relative;
+  grid-column: media;
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-ground);
+}
+
+.hero__video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Nudge da marca: um pouco à esquerda no enquadramento grande (>900px). */
+  object-position: 60% center;
+}
+
+/* O momento focal: a página se assenta — o negro sobe da marca e o tipo é
+   prensado na página. Só opacity/transform/clip-path; o convite fica de fora
+   da coreografia para chegar inteiro no primeiro quadro. */
+#hero-title {
+  animation: type-set 560ms var(--ease-settle) 60ms backwards;
+}
+
+@keyframes type-set {
+  from { clip-path: inset(-0.6em -0.35em 100% -0.35em); }
+  to { clip-path: inset(-0.6em -0.35em -0.6em -0.35em); }
+}
+
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--color-ground);
+  opacity: 0;
+  pointer-events: none;
+  animation: ink-lift 620ms var(--ease-settle) 80ms backwards;
+}
+
+@keyframes ink-lift {
+  from { opacity: 0.92; }
+  to { opacity: 0; }
+}
+
+.hero__video {
+  animation: plate-settle 900ms var(--ease-settle) 100ms backwards;
+}
+
+@keyframes plate-settle {
+  from { transform: scale(1.045); }
+  to { transform: scale(1); }
+}
+
+/* Ação — o bloco de chamada: chapa dourada, texto carvão. */
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 3rem;
+  padding: 1rem 1.7rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius);
+  background: var(--color-gold);
+  color: var(--color-ground);
+  font-size: var(--type-label);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 150ms var(--ease-settle);
+}
+
+.action:hover {
+  border-color: var(--color-gold-deep);
+  background: var(--color-gold-deep);
+}
+
+.action:active { transform: scale(0.98); }
+
+/* Marca do WhatsApp: glifo preenchido na cor do contexto — dourado quando é
+   um link do menu, carvão quando é o texto da chapa dourada. */
+.icon-whatsapp {
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
+}
+
+/* Seções */
+.section { padding-block: clamp(4rem, 8vw, 6.5rem); }
+.section + .section { border-top: 1px solid var(--color-rule); }
+
+.section__heading { max-width: 44rem; }
+
+/* Os títulos de Serviços e Galeria são curtos: soltos do teto de 17ch, a
+   frase cabe inteira em uma linha em vez de partir no meio. */
+.section--services h2,
+.section--gallery h2 {
+  max-width: none;
+}
+
+.section__intro {
+  max-width: 40rem;
+  margin: 1.1rem 0 0;
+  color: var(--color-ink-soft);
+  font-size: var(--type-body);
+  line-height: 1.65;
+}
+
+.handle {
+  color: var(--color-gold-soft);
+  font-weight: 700;
+  text-decoration-color: color-mix(in srgb, var(--color-gold) 55%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+.handle:hover { color: var(--color-gold); }
+
+/* Serviços — o quadro de preços vira campo de carvão elevado. A
+   especificidade precisa vencer `.section + .section`, senão a faixa herda o
+   fio das seções. */
+.section.section--services {
+  border-top: 0;
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.section--services h2 { color: var(--color-ink); }
+
+.section--services .section__intro { color: var(--color-ink-soft); }
+
+.section--services .section__heading { margin-bottom: clamp(2rem, 4vw, 3rem); }
+
+/* A lista chega em dois blocos lado a lado no desktop: a metade esquerda
+   leva os cinco primeiros serviços, a direita os quatro restantes. O fluxo é
+   por coluna (grid-auto-flow: column), então cada bloco lê de cima para baixo
+   sem intercalar; as linhas compartilham altura e os preços alinham na
+   horizontal. Abaixo de 700px volta à coluna única. O fio de separação fica
+   só entre as linhas — o pontilhado antigo saiu, ele não tinha o que ligar. */
+.service-ledger {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(5, auto);
+  column-gap: clamp(2rem, 5vw, 3.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.service-ledger__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0 1.2rem;
+  /* Recuo horizontal: o campo dourado do hover veste a linha inteira, então
+     sem ele o realce encosta no nome e no preço. O fio superior continua
+     ocupando toda a largura da coluna — só o conteúdo recua. */
+  padding: 1.35rem clamp(0.85rem, 1.8vw, 1.15rem);
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+/* Todos os serviços sempre presentes; o foco (hover ou teclado) acende um. */
+.service-ledger__row:hover,
+.service-ledger__row:focus-within {
+  background: var(--color-gold);
+  color: var(--color-ground);
+}
+
+.service-ledger h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-title);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+
+.service-ledger p {
+  margin: 0.3rem 0 0;
+  color: var(--color-ink-soft);
+  font-size: var(--type-body-sm);
+  line-height: 1.55;
+}
+
+.service-ledger__row:hover p,
+.service-ledger__row:focus-within p { color: color-mix(in srgb, var(--color-ground) 78%, transparent); }
+
+.service-ledger__price {
+  text-align: right;
+  color: var(--color-gold-soft);
+  font-size: var(--type-price);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* "a partir de" recua para cinza: quem carrega o valor é o número. */
+.service-ledger__from {
+  margin-right: 0.35rem;
+  color: var(--color-ink-soft);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.service-ledger__row:hover .service-ledger__price,
+.service-ledger__row:focus-within .service-ledger__price { color: var(--color-ground); }
+
+.service-ledger__row:hover .service-ledger__from,
+.service-ledger__row:focus-within .service-ledger__from {
+  color: color-mix(in srgb, var(--color-ground) 72%, transparent);
+}
+
+/* Pré-esconde as linhas só quando o JS assumiu a cena (`data-reveal` escrito no
+   carregamento): sem script nenhum, a lista nasce visível e nunca depende de
+   animação para existir. */
+.service-ledger[data-reveal]:not([data-revealed]) .service-ledger__row {
+  opacity: 0;
+}
+
+/* A lista chega como lista: nove irmãos, passo curto, atados ao atributo de
+   chegada — antes da observação os itens estão no estado visível. O passo cai
+   de 70ms para 40ms para o atraso total não passar de ~640ms. */
+.service-ledger[data-revealed] .service-ledger__row {
+  animation: ledger-row-in 320ms var(--ease-settle) backwards;
+  animation-delay: calc(var(--reveal-step) * 40ms);
+}
+
+@keyframes ledger-row-in {
+  from { opacity: 0; transform: translateY(0.6rem); }
+  to { opacity: 1; transform: none; }
+}
+
+.service-ledger__row:nth-child(1) { --reveal-step: 0; }
+.service-ledger__row:nth-child(2) { --reveal-step: 1; }
+.service-ledger__row:nth-child(3) { --reveal-step: 2; }
+.service-ledger__row:nth-child(4) { --reveal-step: 3; }
+.service-ledger__row:nth-child(5) { --reveal-step: 4; }
+.service-ledger__row:nth-child(6) { --reveal-step: 5; }
+.service-ledger__row:nth-child(7) { --reveal-step: 6; }
+.service-ledger__row:nth-child(8) { --reveal-step: 7; }
+.service-ledger__row:nth-child(9) { --reveal-step: 8; }
+
+/* Galeria — embed do Instagram gerenciado pelo cliente via Elfsight.
+   Não editar markup nem CSS: o widget é atualizado fora deste repositório. */
+.instagram-feed { margin-top: clamp(2rem, 4vw, 2.75rem); }
+
+/* Contato — colofão de carvão */
+.section--contact { background: var(--color-surface); }
+
+.contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(17rem, 0.85fr);
+  align-items: start;
+  gap: clamp(2.5rem, 6vw, 5rem);
+}
+
+.contact__intro p:not(.contact__status) { max-width: 38rem; }
+
+.contact__intro .action { margin-top: 1.6rem; }
+
+.contact__status {
+  margin: 0.9rem 0 0;
+  color: var(--color-ink-soft);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+.contact__colophon {
+  padding-left: clamp(1.5rem, 3vw, 2.5rem);
+  border-left: 1px solid var(--color-rule);
+}
+
+.contact__colophon h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: var(--type-title);
+  font-weight: 500;
+}
+
+.contact__facts { margin: 0; }
+
+.contact__facts > div {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 0.5rem 1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+.contact__facts dt {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--color-ink-soft);
+  font-size: var(--type-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Ícone de fato: traço fino, um só peso, no dourado tênue — o rótulo é que
+   nomeia, o ícone só ancora a linha. */
+.fact-icon {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--color-gold-soft);
+}
+
+.contact__facts dd {
+  margin: 0;
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+}
+
+.contact__facts a {
+  color: var(--color-ink);
+  text-decoration-color: var(--color-rule);
+  text-underline-offset: 0.2em;
+}
+
+.contact__facts a:hover { color: var(--color-gold-soft); }
+
+/* Alvo de toque de 44px sem mover linha: padding vertical + margem negativa. */
+.contact__facts a, .handle, .site-footer__handle a {
+  display: inline-block;
+  padding-block: 0.7rem;
+  margin-block: -0.7rem;
+}
+
+.contact__map {
+  display: block;
+  width: 100%;
+  height: 13rem;
+  margin-top: 1.4rem;
+  border: 1px solid var(--color-rule);
+  border-radius: 0;
+}
+
+/* Rodapé — linha de fólio */
+.site-footer {
+  border-top: 1px solid var(--color-rule);
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-block: 1.5rem;
+  color: var(--color-ink-soft);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+.site-footer p { margin: 0; }
+
+.site-footer__handle a {
+  color: var(--color-gold-soft);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-footer__handle a:hover { color: var(--color-gold); }
+
+/* Telas grandes: o painel sangra até a borda direita e fica largo, o que
+   empurra a marca para longe do texto (o vão à esquerda dela cresce com a
+   largura). Puxa a marca um pouco à esquerda — o excesso mostra o Ground. */
+@media (min-width: 1441px) {
+  .hero__video { left: -12%; }
+}
+
+/* Breakpoints */
+/* Tablet e telefone: o herói abandona o split e empilha centralizado. Antes o
+   emblema continuava na metade direita sangrando até a borda, e em tela menor
+   isso lia como desalinhado; agora a marca vira uma chapa 4/5 centrada logo
+   abaixo do texto, na mesma lógica simétrica do telefone. A chapa tem teto de
+   largura para não esticar desproporcional nas larguras de tablet. */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .hero__text {
+    grid-column: 1;
+    padding: 3rem clamp(1.5rem, 4vw, 3rem) 2.25rem;
+    text-align: center;
+  }
+
+  #hero-title,
+  .hero__subtitle,
+  .hero__deck,
+  .hero__intro,
+  .hero__meta {
+    margin-inline: auto;
+  }
+
+  .hero__media {
+    grid-column: 1;
+    width: min(100%, 30rem);
+    margin-inline: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  /* Chapa 4/5 estreita: empurra a marca um pouco à direita. */
+  .hero__video { object-position: 40% center; }
+
+  .contact { grid-template-columns: minmax(0, 1fr); }
+
+  .contact__colophon {
+    padding: 2rem 0 0;
+    border-top: 1px solid var(--color-rule);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  :root { --scroll-offset: 4.75rem; }
+
+  .site-header {
+    flex-wrap: wrap;
+    gap: 0 1rem;
+    min-height: 4.25rem;
+    padding-block: 0.6rem;
+  }
+
+  html[data-nav-toggle="ready"] .site-nav__toggle { display: inline-flex; }
+
+  /* A marca pode encolher e quebrar em 200% de zoom; o botão não. */
+  .brand__text { min-width: 0; }
+
+  html[data-nav-toggle="ready"] .site-nav {
+    display: none;
+    flex: none;
+    width: 100%;
+    order: 1;
+  }
+
+  html[data-nav-toggle="ready"] .site-nav[data-open] { display: block; }
+
+  html[data-nav-toggle="ready"] .site-nav[data-open] .site-nav__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin-top: 0.6rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  html[data-nav-toggle="ready"] .site-nav[data-open] .site-nav a {
+    justify-content: flex-start;
+    width: 100%;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  html[data-nav-toggle="ready"] .site-nav[data-open] .site-nav__list li {
+    animation: nav-row-in 200ms var(--ease-settle) backwards;
+  }
+
+  html[data-nav-toggle="ready"] .site-nav[data-open] .site-nav__list li:nth-child(1) { animation-delay: 0ms; }
+  html[data-nav-toggle="ready"] .site-nav[data-open] .site-nav__list li:nth-child(2) { animation-delay: 40ms; }
+  html[data-nav-toggle="ready"] .site-nav[data-open] .site-nav__list li:nth-child(3) { animation-delay: 80ms; }
+  html[data-nav-toggle="ready"] .site-nav[data-open] .site-nav__list li:nth-child(4) { animation-delay: 120ms; }
+  html[data-nav-toggle="ready"] .site-nav[data-open] .site-nav__list li:nth-child(5) { animation-delay: 160ms; }
+
+  /* Serviços voltam a uma coluna: largura curta não comporta duas metades. */
+  .service-ledger {
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+}
+
+/* Telefone: o resto da página acompanha o herói e centraliza. A chapa do
+   emblema já veio empilhada e centrada do breakpoint de 900px; aqui só se
+   aperta a largura de leitura. */
+@media (max-width: 640px) {
+  /* A página inteira centraliza no telefone: cada seção se alinha ao meio
+     como o herói - títulos, intros, razão de preços, contato e fólio. O h2 do
+     contato tem teto de 17ch, então precisa do mesmo margin auto para o texto
+     centrado cair no eixo da página em vez de encostar à esquerda. */
+  .section__heading,
+  .section__intro,
+  .contact__intro,
+  .contact__intro h2,
+  .contact__status,
+  .contact__colophon {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .contact__intro .action { margin-inline: auto; }
+
+  /* A razão de preços vira coluna única centrada: nome, descrição e valor
+     empilhados e alinhados pelo eixo do meio. */
+  .service-ledger__row {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 0.4rem;
+    text-align: center;
+  }
+
+  .service-ledger__price { text-align: center; }
+
+  .contact__facts > div {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .contact__facts dt { justify-content: center; }
+
+  .site-footer__inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .section__content, .site-footer__inner { width: min(100% - 2rem, var(--stage)); }
+
+  .site-header { padding-inline: 1rem; }
+
+  .hero__text { padding: 2.25rem 1rem 2rem; }
+  .section { padding-block: 3.75rem; }
+  .service-ledger__row { padding-block: 1.15rem; }
+  .contact__facts > div { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
+  .site-footer__inner { flex-direction: column; align-items: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  /* Toda animação deste arquivo termina no estado visível: colapsar custa
+     movimento, nunca conteúdo. */
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+}
