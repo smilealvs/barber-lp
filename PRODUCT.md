@@ -28,7 +28,7 @@ Premium personalized experience — no-rush service, attention to detail, and pe
 - Booking via WhatsApp (wa.me link), reached through a single CTA in the contact section
 - Gallery is a client-managed Instagram feed embedded through Elfsight (a protected region, not editable here)
 - Google Maps embed for location, with the address also linked as the fallback
-- Animated logo mark in the hero (assets/images/lord4l-animated.webm — 1280×1500 VP9 with an alpha channel, ~1.0 MB — with an .mp4 fallback whose background is baked to the panel Ground); below 901px the video is skipped and the hero shows the matching transparent still (assets/images/lord4l-still.webp, 1024×1200)
+- Animated logo mark in the hero (assets/images/lord4l-animated.webm — 1280×1500 VP9 with an alpha channel, ~1.0 MB — with an .mp4 fallback whose background is baked to the panel Ground); the video plays at every width, and script.js swaps to the .mp4 when the webm's first frame does not arrive (Safari), over the matching transparent still (assets/images/lord4l-still.webp, 1024×1200) as its poster
 
 ## Capabilities and Constraints
 

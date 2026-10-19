@@ -224,3 +224,49 @@ if (heroVideo) {
     prefersReducedMotion.addListener(syncHeroVideoMotion);
   }
 }
+
+// Compatibilidade do formato do vídeo do herói.
+//
+// O WebM é o único que carrega o alfa real, mas nem todo motor que diz saber
+// decodificá-lo de fato decodifica: o WebKit (Safari) responde "probably" para
+// VP9 e ainda assim nunca carrega. Como a escolha da <source> acontece uma vez
+// só, o navegador não cai sozinho para o MP4, e o herói fica no pôster parado.
+// Aqui a gente vigia o primeiro quadro: se ele não chega a tempo, ou se a mídia
+// dá erro, a fonte é trocada pelo MP4 — que decodifica em todo lugar. Onde o
+// WebM funciona (Chrome, Android) nada acontece: o primeiro quadro chega e a
+// troca é abortada.
+if (heroVideo) {
+  const mp4Source = heroVideo.querySelector('source[type="video/mp4"]');
+  const mp4Src = mp4Source ? mp4Source.getAttribute("src") : null;
+
+  let resolved = false;
+
+  const fallbackToMp4 = () => {
+    if (resolved || !mp4Src) return;
+
+    // Só vale enquanto a fonte corrente ainda é o WebM que não vingou. Se o
+    // navegador já migrou sozinho para o MP4, o currentSrc muda e isto vira no-op.
+    if (!/\.webm($|\?)/.test(heroVideo.currentSrc || "")) return;
+
+    resolved = true;
+    heroVideo.src = mp4Src;
+    heroVideo.load();
+
+    if (!prefersReducedMotion.matches) {
+      const playing = heroVideo.play();
+      if (playing && typeof playing.catch === "function") playing.catch(() => {});
+    }
+  };
+
+  heroVideo.addEventListener("loadeddata", () => {
+    resolved = true;
+  });
+  heroVideo.addEventListener("error", fallbackToMp4, true);
+
+  if (heroVideo.error) fallbackToMp4();
+
+  // Sem nem o metadado em 2s, o WebM não vai vingar neste motor.
+  window.setTimeout(() => {
+    if (!resolved && heroVideo.readyState < 1) fallbackToMp4();
+  }, 2000);
+}

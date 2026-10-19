@@ -1,0 +1,13 @@
+{
+  "name": "lord4l-barber---copia",
+  "version": "1.0.0",
+  "description": "Site institucional de uma página para a barbearia Lord 4L — peça de portfólio desenvolvida como site estático, sem build e sem dependências de framework.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
